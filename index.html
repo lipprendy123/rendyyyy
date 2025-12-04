@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alif Rendy | Cyber Security · Software Engineer</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        * {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        
+        body {
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        /* Blinking cursor animation */
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        
+        .cursor-blink {
+            animation: blink 1s infinite;
+        }
+        
+        /* Gradient line animation */
+        @keyframes slideIn {
+            from { transform: scaleX(0); }
+            to { transform: scaleX(1); }
+        }
+        
+        .gradient-line {
+            height: 4px;
+            background: linear-gradient(90deg, #00A3FF, #00FF7A, #FFD400);
+            animation: slideIn 0.8s ease-out;
+            transform-origin: left;
+        }
+        
+        /* Neo-brutalist shadows */
+        .brutal-shadow {
+            box-shadow: 8px 8px 0px #00A3FF;
+        }
+        
+        .brutal-shadow-green {
+            box-shadow: 8px 8px 0px #00FF7A;
+        }
+        
+        .brutal-shadow-yellow {
+            box-shadow: 8px 8px 0px #FFD400;
+        }
+        
+        /* Skill box hover */
+        .skill-box {
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s, background 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .skill-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            transition: left 0.3s ease;
+        }
+        
+        .skill-box:hover::before {
+            left: 100%;
+        }
+        
+        .skill-box:hover {
+            transform: translate(-6px, -6px) scale(1.02);
+        }
+        
+        /* Fade in on scroll */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Button styles */
+        .btn-primary {
+            background: #00A3FF;
+            color: #0a0a0a;
+            font-weight: 700;
+            padding: 16px 32px;
+            border: 3px solid #0a0a0a;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            transition: left 0.3s ease;
+        }
+        
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 12px 12px 0px #00A3FF;
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: #ffffff;
+            font-weight: 700;
+            padding: 16px 32px;
+            border: 3px solid #ffffff;
+            transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+            position: relative;
+        }
+        
+        .btn-secondary:hover {
+            background: #ffffff;
+            color: #0a0a0a;
+            transform: translate(-4px, -4px);
+            box-shadow: 8px 8px 0px #ffffff;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #00A3FF;
+            border: 2px solid #0a0a0a;
+        }
+        
+        /* SweetAlert2 custom styling */
+        .swal2-popup {
+            font-family: 'Space Grotesk', sans-serif;
+            border: 4px solid #00A3FF;
+            box-shadow: 8px 8px 0px #00A3FF;
+            background: #151515;
+            color: #ffffff;
+        }
+        
+        .swal2-title {
+            color: #ffffff;
+        }
+        
+        .swal2-html-container {
+            color: #cccccc;
+        }
+        
+        .swal2-confirm {
+            background: #00A3FF !important;
+            color: #0a0a0a !important;
+            border: 2px solid #0a0a0a !important;
+            font-weight: 700;
+        }
+        
+        .swal2-deny {
+            background: #00FF7A !important;
+            color: #0a0a0a !important;
+            border: 2px solid #0a0a0a !important;
+            font-weight: 700;
+        }
+        
+        .swal2-cancel {
+            background: #333333 !important;
+            color: #ffffff !important;
+            border: 2px solid #666666 !important;
+        }
+
+        /* Stagger animation for skills */
+        .skill-item {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .skill-item:nth-child(1) { animation-delay: 0.1s; }
+        .skill-item:nth-child(2) { animation-delay: 0.15s; }
+        .skill-item:nth-child(3) { animation-delay: 0.2s; }
+        .skill-item:nth-child(4) { animation-delay: 0.25s; }
+        .skill-item:nth-child(5) { animation-delay: 0.3s; }
+        .skill-item:nth-child(6) { animation-delay: 0.35s; }
+        .skill-item:nth-child(7) { animation-delay: 0.4s; }
+        .skill-item:nth-child(8) { animation-delay: 0.45s; }
+    </style>
+</head>
+<body class="antialiased">
+    
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center px-6 py-20 relative">
+        <div class="absolute top-0 left-0 w-full h-1 gradient-line"></div>
+        <div class="max-w-5xl w-full">
+            <div class="fade-in">
+                <h1 class="text-6xl md:text-8xl font-bold mb-6 leading-tight">
+                    Alif Rendy Pahlevi<span class="cursor-blink text-[#00A3FF]">_</span>
+                </h1>
+                <!-- <CHANGE> Updated tagline - removed Data Science, refined positioning -->
+                <div class="text-2xl md:text-3xl font-medium mb-8 text-gray-300">
+                    <span class="text-[#00A3FF]">Cyber Security</span> enthusiast | 
+                    <span class="text-[#00FF7A]">Software Engineer</span>
+                </div>
+                <!-- <CHANGE> Updated positioning from "expert" to "passionate learner" -->
+                <p class="text-xl md:text-2xl mb-12 max-w-3xl text-gray-400 font-medium">
+                    Passionate about building secure, scalable systems through hands-on exploration and continuous learning. I approach every challenge with curiosity and analytical thinking.
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <button onclick="handleConnect()" class="btn-primary uppercase tracking-wide">
+                        Let's Connect
+                    </button>
+                    <button onclick="scrollToSection('skills')" class="btn-secondary uppercase tracking-wide">
+                        View Skills
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- About Section -->
+    <section id="about" class="py-20 px-6 bg-[#151515]">
+        <div class="max-w-5xl mx-auto">
+            <div class="fade-in">
+                <h2 class="text-5xl md:text-6xl font-bold mb-12 brutal-shadow inline-block px-8 py-4 bg-[#00A3FF] text-[#0a0a0a]">
+                    ABOUT
+                </h2>
+                <div class="mt-12 max-w-3xl">
+                    <!-- <CHANGE> Refined copywriting - authentic enthusiast positioning -->
+                    <p class="text-xl md:text-2xl leading-relaxed text-gray-300 font-medium">
+                        I'm an enthusiast who's genuinely fascinated by how systems work—especially at the intersection of security and engineering. I love diving into problems, experimenting with solutions, and learning from every project. My goal isn't to be the best in the room, but to keep growing, building things that matter, and sharing knowledge along the way.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Skills & Interests Section -->
+    <section id="skills" class="py-20 px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="fade-in">
+                <h2 class="text-5xl md:text-6xl font-bold mb-16 brutal-shadow-green inline-block px-8 py-4 bg-[#00FF7A] text-[#0a0a0a]">
+                    SKILLS & INTERESTS
+                </h2>
+            </div>
+            
+            <!-- Skills Grid -->
+            <!-- <CHANGE> Removed Machine Learning, kept 8 core skills -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16 fade-in">
+                <div class="skill-item skill-box bg-[#151515] border-4 border-[#00A3FF] p-6 brutal-shadow group cursor-pointer" title="Building data pipelines and automation">
+                    <div class="flex items-center gap-3 mb-2">
+                        <i data-lucide="code-2" class="text-[#00A3FF]"></i>
+                        <h3 class="text-2xl font-bold">Python</h3>
+                    </div>
+                    <p class="text-gray-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity">Building data pipelines and automation</p>
+                </div>
+                
+                <div class="skill-item skill-box bg-[#151515] border-4 border-[#00FF7A] p-6 brutal-shadow-green group cursor-pointer" title="Database design and query optimization">
+                    <div class="flex items-center gap-3 mb-2">
+                        <i data-lucide="database" class="text-[#00FF7A]"></i>
+                        <h3 class="text-2xl font-bold">SQL</h3>
+                    </div>
+                    <p class="text-gray-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity">Database design and query optimization</p>
+                </div>
+                
+                <div class="skill-item skill-box bg-[#151515] border-4 border-[#FFD400] p-6 brutal-shadow-yellow group cursor-pointer" title="Scalable backend services">
+                    <div class="flex items-center gap-3 mb-2">
+                        <i data-lucide="server" class="text-[#FFD400]"></i>
+                        <h3 class="text-2xl font-bold">Node.js</h3>
+                    </div>
+                    <p class="text-gray-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity">Scalable backend services</p>
+                </div>
+                
+                <div class="skill-item skill-box bg-[#151515] border-4 border-[#00A3FF] p-6 brutal-shadow group cursor-pointer" title="Enterprise applications with Spring Boot">
+                    <div class="flex items-center gap-3 mb-2">
+                        <i data-lucide="coffee" class="text-[#00A3FF]"></i>
+                        <h3 class="text-2xl font-bold">Java/Spring</h3>
+                    </div>
+                    <p class="text-gray-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity">Enterprise applications with Spring Boot</p>
+                </div>
+                
+                <div class="skill-item skill-box bg-[#151515] border-4 border-[#00FF7A] p-6 brutal-shadow-green group cursor-pointer" title="System administration and security">
+                    <div class="flex items-center gap-3 mb-2">
+                        <i data-lucide="terminal" class="text-[#00FF7A]"></i>
+                        <h3 class="text-2xl font-bold">Linux</h3>
+                    </div>
+                    <p class="text-gray-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity">System administration and security</p>
+                </div>
+                
+                <div class="skill-item skill-box bg-[#151515] border-4 border-[#00A3FF] p-6 brutal-shadow group cursor-pointer" title="Threat detection and secure architectures">
+                    <div class="flex items-center gap-3 mb-2">
+                        <i data-lucide="shield" class="text-[#00A3FF]"></i>
+                        <h3 class="text-2xl font-bold">Network Security</h3>
+                    </div>
+                    <p class="text-gray-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity">Threat detection and secure architectures</p>
+                </div>
+                
+                <div class="skill-item skill-box bg-[#151515] border-4 border-[#00FF7A] p-6 brutal-shadow-green group cursor-pointer" title="High-performance caching strategies">
+                    <div class="flex items-center gap-3 mb-2">
+                        <i data-lucide="zap" class="text-[#00FF7A]"></i>
+                        <h3 class="text-2xl font-bold">Redis</h3>
+                    </div>
+                    <p class="text-gray-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity">High-performance caching strategies</p>
+                </div>
+                
+                <div class="skill-item skill-box bg-[#151515] border-4 border-[#FFD400] p-6 brutal-shadow-yellow group cursor-pointer" title="Containerization and orchestration">
+                    <div class="flex items-center gap-3 mb-2">
+                        <i data-lucide="box" class="text-[#FFD400]"></i>
+                        <h3 class="text-2xl font-bold">Docker</h3>
+                    </div>
+                    <p class="text-gray-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity">Containerization and orchestration</p>
+                </div>
+            </div>
+            
+            <!-- Interests -->
+            <div class="fade-in">
+                <h3 class="text-3xl md:text-4xl font-bold mb-8 text-[#00A3FF]">INTERESTS</h3>
+                <div class="flex flex-wrap gap-4">
+                    <span class="px-6 py-3 bg-transparent border-3 border-[#00A3FF] text-[#00A3FF] font-bold text-lg hover:bg-[#00A3FF] hover:text-[#0a0a0a] transition-colors cursor-pointer">AI Safety</span>
+                    <span class="px-6 py-3 bg-transparent border-3 border-[#00FF7A] text-[#00FF7A] font-bold text-lg hover:bg-[#00FF7A] hover:text-[#0a0a0a] transition-colors cursor-pointer">Ethical Hacking</span>
+                    <span class="px-6 py-3 bg-transparent border-3 border-[#FFD400] text-[#FFD400] font-bold text-lg hover:bg-[#FFD400] hover:text-[#0a0a0a] transition-colors cursor-pointer">System Architecture</span>
+                    <span class="px-6 py-3 bg-transparent border-3 border-[#00A3FF] text-[#00A3FF] font-bold text-lg hover:bg-[#00A3FF] hover:text-[#0a0a0a] transition-colors cursor-pointer">Data Privacy</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Philosophy Section -->
+    <section class="py-20 px-6 bg-[#151515]">
+        <div class="max-w-4xl mx-auto text-center fade-in">
+            <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-8">
+                "I build <span class="text-[#00A3FF]">secure</span>, <span class="text-[#00FF7A]">efficient systems</span> that scale with <span class="text-[#FFD400]">intention</span>."
+            </h2>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 px-6">
+        <div class="max-w-5xl mx-auto">
+            <div class="fade-in">
+                <h2 class="text-5xl md:text-6xl font-bold mb-12 brutal-shadow-yellow inline-block px-8 py-4 bg-[#FFD400] text-[#0a0a0a]">
+                    LET'S CONNECT
+                </h2>
+                <p class="text-2xl md:text-3xl mb-12 text-gray-300 font-medium max-w-2xl">
+                    Interested in collaboration or just want to discuss technology? I'm always open to new opportunities and conversations.
+                </p>
+                
+                <!-- <CHANGE> Added Instagram button, refined button layout -->
+                <div class="flex flex-wrap gap-6 mb-12">
+                    <button onclick="handleInstagram()" class="btn-primary uppercase tracking-wide flex items-center gap-2">
+                        <i data-lucide="instagram"></i>
+                        Instagram
+                    </button>
+                    <button onclick="handleGitHub()" class="btn-secondary uppercase tracking-wide flex items-center gap-2">
+                        <i data-lucide="github"></i>
+                        GitHub
+                    </button>
+                    <button onclick="handleLinkedIn()" class="btn-secondary uppercase tracking-wide flex items-center gap-2">
+                        <i data-lucide="linkedin"></i>
+                        LinkedIn
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="py-8 px-6 border-t-4 border-[#00A3FF] bg-[#0a0a0a]">
+        <div class="max-w-5xl mx-auto text-center">
+            <p class="text-gray-400 font-medium">© 2025 Alif Rendy · Designed with Neo-Brutalism</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
+        // Fade in on scroll animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+        
+        // Smooth scroll function
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+        
+        // SweetAlert2 handlers
+        function handleConnect() {
+            Swal.fire({
+                title: 'Connect with Alif',
+                text: 'Choose how you\'d like to get in touch',
+                icon: 'question',
+                showCancelButton: true,
+                showDenyButton: true,
+                confirmButtonText: 'Instagram',
+                denyButtonText: 'LinkedIn',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#00A3FF',
+                denyButtonColor: '#00FF7A',
+                cancelButtonColor: '#666'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    handleInstagram();
+                } else if (result.isDenied) {
+                    handleLinkedIn();
+                }
+            });
+        }
+        
+        // <CHANGE> Updated to Instagram handler
+        function handleInstagram() {
+            Swal.fire({
+                title: 'Open Instagram Profile',
+                text: 'This will navigate to Instagram in a new tab',
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonText: 'Open Instagram',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#00A3FF',
+                cancelButtonColor: '#666'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.open('https://instagram.com/alifrendy', '_blank');
+                }
+            });
+        }
+        
+        function handleGitHub() {
+            Swal.fire({
+                title: 'Open GitHub Profile',
+                text: 'This will navigate to GitHub in a new tab',
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonText: 'Open GitHub',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#00A3FF',
+                cancelButtonColor: '#666'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.open('https://github.com/alifrendy', '_blank');
+                }
+            });
+        }
+        
+        function handleLinkedIn() {
+            Swal.fire({
+                title: 'Open LinkedIn Profile',
+                text: 'This will navigate to LinkedIn in a new tab',
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonText: 'Open LinkedIn',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#00A3FF',
+                cancelButtonColor: '#666'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.open('https://linkedin.com/in/alifrendy', '_blank');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
